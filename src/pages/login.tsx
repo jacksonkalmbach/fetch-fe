@@ -20,7 +20,7 @@ const Login = () => {
   })
     .then((response) => {
       if (response.ok) {
-        navigate("/explore");
+        navigate("/discover");
       } else {
         console.log("Login failed!");
       }

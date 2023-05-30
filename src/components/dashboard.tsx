@@ -1,5 +1,6 @@
 import React from "react";
 import Filters from "./filters";
+import SearchResults from "./search-results";
 
 const Dashboard = () => {
   return (
@@ -18,6 +19,7 @@ const Dashboard = () => {
           </h2>
           <h2>Sort by: Date</h2>
         </div>
+        <SearchResults />
       </div>
     </div>
   );
