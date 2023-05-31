@@ -1,5 +1,4 @@
-import React, { useState } from "react";
-import Input from "./ui/input";
+import React from "react";
 
 const UserAuthForm = () => {
   return (
@@ -8,9 +7,9 @@ const UserAuthForm = () => {
       <p className="text-sm">Enter your email to sign in to your account</p>
       <form className="w-full h-full flex flex-col p-5">
         <label htmlFor="email">Email</label>
-        <Input placeholder="name@example.com" type="email" />
+        <input placeholder="name@example.com" type="email" />
         <label htmlFor="password">Password</label>
-        <Input placeholder="Password" type="password" />
+        <input placeholder="Password" type="password" />
         <button
           className="flex justify-center items-center bg-primary text-white rounded-md h-8 w-full mt-4 hover:bg-primary/90 active:scale-95 transition"
           type="submit"

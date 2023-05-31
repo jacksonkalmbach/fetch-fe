@@ -5,21 +5,11 @@ import SearchResults from "./search-results";
 const Dashboard = () => {
   return (
     <div className="w-full h-full flex bg-lightGray">
-      <div className="flex flex-col w-full p-12">
-        <div className="flex flex-col w-full mb-12">
-          <h1 className="text-3xl font-bold mb-6">Find a Dog</h1>
-          <div className="flex w-full">
-            <Filters />
-          </div>
+      <div className="flex flex-col h-full w-full px-12">
+        <div className="flex h-full flex-col w-full gap-6">
+          <Filters />
+          <SearchResults />
         </div>
-        <div className="flex justify-between">
-          <h2>
-            We found <span className="text-primary font-bold">53</span>{" "}
-            available dogs!
-          </h2>
-          <h2>Sort by: Date</h2>
-        </div>
-        <SearchResults />
       </div>
     </div>
   );

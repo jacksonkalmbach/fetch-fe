@@ -5,13 +5,15 @@ interface SearchFiltersState {
   zipCodes: string[];
   minAge: number;
   maxAge: number;
+  favorites: string[];
 }
 
 const initialState: SearchFiltersState = {
-  breeds: [],
+  breeds: ["German Shepard", "Vizsla"],
   zipCodes: [],
   minAge: 0,
   maxAge: 0,
+  favorites: [],
 };
 
 export const searchFiltersSlice = createSlice({
@@ -41,6 +43,14 @@ export const searchFiltersSlice = createSlice({
     setMaxAge: (state, action) => {
       state.maxAge = action.payload;
     },
+    addToFavorites: (state, action) => {
+      state.favorites.push(action.payload);
+    },
+    removeFromFavorites: (state, action) => {
+      state.favorites = state.favorites.filter(
+        (favorite) => favorite !== action.payload
+      );
+    },
   },
 });
 
@@ -52,6 +62,8 @@ export const {
   removeZipCode,
   setMinAge,
   setMaxAge,
+  addToFavorites,
+  removeFromFavorites,
 } = searchFiltersSlice.actions;
 
 export default searchFiltersSlice.reducer;

@@ -5,7 +5,8 @@ import UserAuthForm from "../components/user-auth-form";
 
 const Login = () => {
   const navigate = useNavigate();
-  const [user, setUser] = useState();
+  const [name, setName] = useState();
+  const [email, setEmail] = useState();
 
   fetch("https://frontend-take-home-service.fetch.com/auth/login", {
     method: "POST",

@@ -1,6 +1,16 @@
-import React from "react";
+import React, { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+
+import FilledHeartIcon from "./icons/filled-heart";
+import OutlineHeartIcon from "./icons/outline-heart";
+
+import {
+  addToFavorites,
+  removeFromFavorites,
+} from "../store/reducers/search-filters-slice";
 
 interface CardProps {
+  id: string;
   name: string;
   breed: string;
   age: number;
@@ -8,23 +18,52 @@ interface CardProps {
   zipCode: string;
 }
 
-const Card = ({ name, breed, age, img, zipCode }: CardProps) => {
+const Card = ({ id, name, breed, age, img, zipCode }: CardProps) => {
+  const dispatch = useDispatch();
+
+  const [favorite, setFavorite] = useState(false);
+
+  const handleFavoriteClick = () => {
+    if (!favorite) {
+      dispatch(addToFavorites(id));
+      setFavorite(true);
+    } else {
+      dispatch(removeFromFavorites(id));
+      setFavorite(false);
+    }
+  };
+
   return (
-    <div className="flex flex-col max-w-[300px] max-h-[300px] justify-center items-center p-2 bg-white rounded cursor-pointer hover:border-2 hover:border-primary">
+    <div className="flex flex-col max-w-[300px] justify-center items-center px-2 py-4 bg-white rounded-lg">
       <div className="relative w-[250px] h-[250px]">
-        <span className="material-symbols-outlined absolute top-2 right-2 text-primary bg-white rounded-full p-1 z-10 cursor-pointer">
-          favorite
-        </span>
+        {favorite ? (
+          <FilledHeartIcon
+            className="absolute h-6 w-6 top-2 right-2 text-primary bg-white rounded-full p-1 z-10 cursor-pointer"
+            onClick={handleFavoriteClick}
+          />
+        ) : (
+          <OutlineHeartIcon
+            className="absolute h-6 w-6 top-2 right-2 text-primary bg-white rounded-full p-1 z-10 cursor-pointer"
+            onClick={handleFavoriteClick}
+          />
+        )}
         <img className="w-full h-full object-cover" src={img} alt={name} />
       </div>
-      <div>
-        <h3 className="font-bold text-3xl">{name}</h3>
-        <div className="flex text-gray">
+      <div className="w-full">
+        <div className="flex justify-center items-center">
+          <h3 className="font-bold text-3xl">{name}</h3>
+        </div>
+        <div className="flex text-gray w-full justify-evenly items-center">
           <p className="text-gray-400">{breed}</p>
-          <p className="flex items-center justify-center gap-1 text-gray-400">
+          <p className="flex items-center justify-center gap-1 text-gray-400 px-2">
             <span className="material-symbols-outlined">cake</span> {age}
           </p>
+          <p className="flex items-center justify-center gap-1 text-gray-400">
+            <span className="material-symbols-outlined">location_on</span>{" "}
+            {zipCode}
+          </p>
         </div>
+        <div className="flex justify-start text-gray"></div>
       </div>
     </div>
   );
