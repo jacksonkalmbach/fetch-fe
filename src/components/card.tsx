@@ -39,7 +39,7 @@ const Card = ({ id, name, breed, age, img, zipCode }: CardProps) => {
   };
 
   return (
-    <div className="flex flex-col max-w-[300px] h-fit justify-center items-center px-2 py-4 bg-white rounded-lg">
+    <div className="flex flex-col max-w-[270px] h-fit justify-center items-center px-2 py-4 bg-white rounded-lg">
       <div className="relative w-[250px] h-[250px]">
         {favorites.includes(id) ? (
           <FilledHeartIcon

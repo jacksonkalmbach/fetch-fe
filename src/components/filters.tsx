@@ -26,7 +26,7 @@ const Filters = () => {
   return (
     <div className="flex w-full items-center space-x-2 mt-6">
       <div className="flex items-center">
-        {(selectedBreeds.length > 0 || selectedZipCodes > 0) && (
+        {(selectedBreeds.length > 0 || selectedZipCodes.length > 0) && (
           <p className="font-bold">Filters Applied: </p>
         )}
       </div>

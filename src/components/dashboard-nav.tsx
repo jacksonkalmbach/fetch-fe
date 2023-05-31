@@ -11,7 +11,6 @@ const DashboardNav = () => {
 
   const handleSelected = (title: string) => {
     setSelectedFilter(title);
-    console.log(title);
   };
 
   const handleLogout = () => {

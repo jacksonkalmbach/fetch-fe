@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
+import { clearFavorites } from "../store/reducers/search-filters-slice";
 import { DogInterface } from "../types/dog";
 
 import FavoritePreview from "./favoritePreview";
 
 const FavoritesList = () => {
-  const navigate = useNavigate();
+  const dispatch = useDispatch();
   const favorites = useSelector((state: any) => state.searchFilters.favorites);
   const [favoriteDogs, setFavoriteDogs] = useState<DogInterface[]>([]);
 
@@ -26,8 +26,8 @@ const FavoritesList = () => {
       });
   }, [favorites]);
 
-  const handleViewAllFavorites = () => {
-    navigate("/discover/favorites");
+  const handleClearFavorites = () => {
+    dispatch(clearFavorites());
   };
 
   return (
@@ -39,9 +39,9 @@ const FavoritesList = () => {
         {favoriteDogs.length > 0 && (
           <p
             className="text-gray hover:font-bold cursor-pointer"
-            onClick={handleViewAllFavorites}
+            onClick={handleClearFavorites}
           >
-            View All
+            Clear All
           </p>
         )}
       </div>

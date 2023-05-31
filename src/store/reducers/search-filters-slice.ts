@@ -59,6 +59,9 @@ export const searchFiltersSlice = createSlice({
         (favorite) => favorite !== action.payload
       );
     },
+    clearFavorites: (state) => {
+      state.favorites = [];
+    },
   },
 });
 
@@ -74,6 +77,7 @@ export const {
   setSort,
   addToFavorites,
   removeFromFavorites,
+  clearFavorites,
 } = searchFiltersSlice.actions;
 
 export default searchFiltersSlice.reducer;
