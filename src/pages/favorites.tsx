@@ -5,11 +5,13 @@ import { useSelector } from "react-redux";
 import { DogInterface } from "../types/dog";
 import Card from "../components/card";
 import BackIcon from "../components/icons/back";
+import Match from "../components/match";
 
 const Favorites = () => {
   const navigate = useNavigate();
   const favorites = useSelector((state: any) => state.searchFilters.favorites);
   const [favoriteDogs, setFavoriteDogs] = useState<DogInterface[]>([]);
+  const [showMatch, setShowMatch] = useState(false);
 
   useEffect(() => {
     fetch("https://frontend-take-home-service.fetch.com/dogs", {
@@ -30,9 +32,18 @@ const Favorites = () => {
     navigate("/discover");
   };
 
+  const handleFindMatchClick = () => {
+    setShowMatch(true);
+  };
+
+  const handleClose = () => {
+    setShowMatch(false);
+  };
+
   return (
-    <div className="w-full h-full">
+    <div className="w-full h-full relative">
       <Outlet />
+      {showMatch && <Match onClick={handleClose} />}
       <div className="flex flex-col w-full h-full bg-lightGray p-6 gap-10">
         <div className="flex w-fit items-center p-2 border border-transparent rounded cursor-pointer hover:border-gray hover:border">
           <BackIcon
@@ -41,7 +52,15 @@ const Favorites = () => {
           />
           Back to Discover
         </div>
-        <h1 className="text-3xl font-bold w-full text-center">My Favorites</h1>
+        <div className="flex justify-between items-center">
+          <h1 className="text-3xl font-bold w-full">My Favorites</h1>
+          <button
+            className="bg-primary text-white rounded cursor-pointer active:transform active:scale-90"
+            onClick={handleFindMatchClick}
+          >
+            Find a Match
+          </button>
+        </div>
         <div className="flex w-full h-full justify-center flex-wrap gap-6">
           {favoriteDogs.length > 0 &&
             favoriteDogs.map((dog: DogInterface) => {
