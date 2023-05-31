@@ -39,6 +39,9 @@ export const searchFiltersSlice = createSlice({
         (zipCode) => zipCode !== action.payload
       );
     },
+    clearZipCodes: (state) => {
+      state.zipCodes = [];
+    },
     setMinAge: (state, action) => {
       state.minAge = action.payload;
     },
@@ -65,6 +68,7 @@ export const {
   clearBreeds,
   addZipCode,
   removeZipCode,
+  clearZipCodes,
   setMinAge,
   setMaxAge,
   setSort,

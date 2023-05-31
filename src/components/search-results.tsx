@@ -29,9 +29,18 @@ const SearchResults = () => {
   const searchEndpoint = "/dogs/search";
   const { minAge, maxAge, breeds, zipCodes, sort } = filters;
 
+  const searchBreeds = breeds.map((breed: string) => `&breeds=${breed}`);
+
+  const searchZipCodes = zipCodes.map(
+    (zipCode: string) => `&zipCodes=${zipCode}`
+  );
+
+  console.log("SEARCH ZIP CODES", searchZipCodes.join());
+  console.log("SEARCH BREEDS", searchBreeds);
+
   useEffect(() => {
     fetch(
-      `https://frontend-take-home-service.fetch.com/dogs/search?ageMin=${minAge}&ageMax=${maxAge}&size=${resultsPerPage}&sort=breed:${sort}`,
+      `https://frontend-take-home-service.fetch.com/dogs/search?ageMin=${minAge}&ageMax=${maxAge}${searchZipCodes.join()}${searchBreeds}&size=${resultsPerPage}&sort=breed:${sort}`,
       {
         method: "GET",
         credentials: "include",

@@ -1,16 +1,24 @@
 import React from "react";
 import { useDispatch } from "react-redux";
-import { removeBreed } from "../store/reducers/search-filters-slice";
+import {
+  removeBreed,
+  removeZipCode,
+} from "../store/reducers/search-filters-slice";
 
 interface SelectedFilterProps {
   title: string;
+  type: string;
 }
 
-const SelectedFilter = ({ title }: SelectedFilterProps) => {
+const SelectedFilter = ({ title, type }: SelectedFilterProps) => {
   const dispatch = useDispatch();
 
   const handleRemove = () => {
-    dispatch(removeBreed(title));
+    if (type === "breed") {
+      dispatch(removeBreed(title));
+    } else {
+      dispatch(removeZipCode(title));
+    }
   };
 
   return (

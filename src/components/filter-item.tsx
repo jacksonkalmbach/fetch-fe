@@ -49,6 +49,11 @@ const FilterItem = ({ title, selected, name }: FilterItemProps) => {
       dispatch(setMinAge(event.target.value));
     } else if (event.target.name === "maxAge") {
       dispatch(setMaxAge(event.target.value));
+    } else if (event.target.name === "zipCode") {
+      const zipCode = event.target.value;
+      if (/^\d+$/.test(zipCode) && zipCode.length === 5) {
+        dispatch(addZipCode(zipCode));
+      }
     }
   };
 
@@ -69,6 +74,7 @@ const FilterItem = ({ title, selected, name }: FilterItemProps) => {
         placeholder="Any"
         name={name}
         onChange={onSearchChange}
+        maxLength={name === "zipCode" ? 5 : undefined}
       />
       {title === "Breed" && showOptions && (
         <div className="max-h-[150px] w-full overflow-scroll overflow-x-hidden">
