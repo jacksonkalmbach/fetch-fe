@@ -1,21 +1,26 @@
 import React, { ChangeEvent, useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
+import {
+  setMinAge,
+  setMaxAge,
+  addZipCode,
+} from "../store/reducers/search-filters-slice";
 
 import BreedOption from "./breed-option";
 
 interface FilterItemProps {
   title: string;
   selected: boolean;
+  name: string;
   onClick?: () => void;
 }
 
-const FilterItem = ({ title, selected }: FilterItemProps) => {
-  const selectedBreeds = useSelector(
-    (state: any) => state.searchFilters.breeds
-  );
+const FilterItem = ({ title, selected, name }: FilterItemProps) => {
+  const dispatch = useDispatch();
   const [breeds, setBreeds] = useState<string[]>([]);
   const [filteredBreeds, setFilteredBreeds] = useState<string[]>([]);
   const [searchField, setSearchField] = useState<string>("");
+  const [showOptions, setShowOptions] = useState<boolean>(false);
 
   useEffect(() => {
     fetch("https://frontend-take-home-service.fetch.com/dogs/breeds", {
@@ -37,43 +42,42 @@ const FilterItem = ({ title, selected }: FilterItemProps) => {
   }, [searchField, breeds]);
 
   const onSearchChange = (event: ChangeEvent<HTMLInputElement>) => {
-    const searchFieldString = event.target.value.toLowerCase();
-    setSearchField(searchFieldString);
+    if (event.target.name === "breed") {
+      const searchFieldString = event.target.value.toLowerCase();
+      setSearchField(searchFieldString);
+    } else if (event.target.name === "minAge") {
+      dispatch(setMinAge(event.target.value));
+    } else if (event.target.name === "maxAge") {
+      dispatch(setMaxAge(event.target.value));
+    }
   };
 
+  useEffect(() => {
+    if (searchField.length > 0) {
+      setShowOptions(true);
+    } else {
+      setShowOptions(false);
+    }
+  }, [searchField]);
+
   return (
-    <>
-      {title === "Breed" && selected ? (
-        <div className="absolute w-[400px] flex flex-col justify-center border rounded items-center z-10 bg-white pt-6 px-4">
-          <label className="font-bold">{title}</label>
-          {selectedBreeds.length === 0 ? (
-            <p>All Dog Breeds {breeds.length}</p>
-          ) : (
-            <p>{selectedBreeds.length} Selected</p>
-          )}
-          <input
-            className="flex h-10 w-full border border-lightGray rounded bg-white px-3 py-2 text-sm ring-offset-background"
-            type="text"
-            placeholder="Search Breeds"
-            onChange={onSearchChange}
-          />
-          <div className="h-[300px] overflow-scroll w-full overflow-x-hidden">
-            {filteredBreeds.map((breed: string) => (
-              <BreedOption title={breed} />
-            ))}
-          </div>
-        </div>
-      ) : (
-        <div className="flex flex-col justify-center items-center gap-2">
-          <label className="font-bold">{title}</label>
-          <input
-            className="flex h-10 w-full border border-gray rounded bg-white px-3 py-2 text-sm ring-offset-background"
-            type="text"
-            placeholder="Any"
-          />
+    <div className="flex flex-col justify-center items-center gap-2">
+      <label className="font-bold">{title}</label>
+      <input
+        className="flex h-10 w-full border border-gray rounded bg-white px-3 py-2 text-sm ring-offset-background"
+        type="text"
+        placeholder="Any"
+        name={name}
+        onChange={onSearchChange}
+      />
+      {title === "Breed" && showOptions && (
+        <div className="max-h-[150px] w-full overflow-scroll overflow-x-hidden">
+          {filteredBreeds.map((breed: string) => (
+            <BreedOption title={breed} />
+          ))}
         </div>
       )}
-    </>
+    </div>
   );
 };
 

@@ -3,6 +3,8 @@ import { useSelector } from "react-redux";
 
 import Card from "./card";
 import ChevronDownIcon from "./icons/chevron-down";
+import ChevronLeftIcon from "./icons/chevron-left";
+import ChevronRightIcon from "./icons/chevron-right";
 
 interface Dog {
   id: string;
@@ -17,9 +19,13 @@ const SearchResults = () => {
   const [search, setSearch] = useState<Dog[]>([]);
   const [dogs, setDogs] = useState<Dog[]>([]);
   const [dogsAvailable, setDogsAvailable] = useState<number>(0);
-  const [sortType, setSortType] = useState<string>("Breeds A-Z");
+  const [sortType, setSortType] = useState<string>("A-Z");
   const [currentPage, setCurrentPage] = useState<number>(1);
+  const [nextPageQuery, setNextPageQuery] = useState<string>("");
+  const [prevPageQuery, setPrevPageQuery] = useState<string>("");
   const resultsPerPage = 8;
+
+  console.log("pages", Math.ceil(dogsAvailable / resultsPerPage));
 
   const filters = useSelector((state: any) => state.searchFilters);
 
@@ -30,6 +36,11 @@ const SearchResults = () => {
   const queryParams = new URLSearchParams();
   queryParams.append("minAge", minAge.toString());
   queryParams.append("maxAge", maxAge.toString());
+  queryParams.append(
+    "sort=field:",
+    `${sortType === "A-Z" ? "[asc]" : "[desc]"}`
+  );
+  queryParams.append("size", resultsPerPage.toString());
 
   if (breeds.length > 0) {
     breeds.forEach((breed: string) => queryParams.append("breeds", breed));
@@ -41,6 +52,14 @@ const SearchResults = () => {
     );
   }
   const searchUrl = `${apiUrl}${searchEndpoint}?${queryParams.toString()}`;
+  console.log(searchUrl);
+
+  const handleNextPage = () => {
+    // queryParams.append("", nextQuery);
+    // console.log(searchUrl);
+    // setCurrentPage(currentPage + 1);
+    console.log("next page");
+  };
 
   useEffect(() => {
     fetch(searchUrl, {
@@ -49,27 +68,22 @@ const SearchResults = () => {
     })
       .then((response) => response.json())
       .then((data) => {
+        console.log("DATA", data);
         setSearch(data.resultIds);
         setDogsAvailable(data.total);
-        setCurrentPage(1);
+        setNextPageQuery(data.next);
+        setPrevPageQuery(data.prev);
       });
   }, [filters, searchUrl]);
 
   useEffect(() => {
-    // Calculate the start and end index of the current page's results
-    const startIndex = (currentPage - 1) * resultsPerPage;
-    const endIndex = startIndex + resultsPerPage;
-
-    // Extract the portion of dogs array for the current page
-    const currentDogs = search.slice(startIndex, endIndex);
-
     fetch("https://frontend-take-home-service.fetch.com/dogs", {
       method: "POST",
       credentials: "include",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(currentDogs), // Use currentDogs instead of search
+      body: JSON.stringify(search),
     })
       .then((response) => response.json())
       .then((data) => {
@@ -77,18 +91,15 @@ const SearchResults = () => {
       });
   }, [search, currentPage]);
 
-  const handlePageChange = (pageNumber: number) => {
-    setCurrentPage(pageNumber);
-  };
-
   return (
-    <div className="flex flex-col gap-6 mx-h-full overflow-scroll">
+    <div className="flex flex-col gap-6 max-h-full overflow-hidden">
       <div className="flex justify-between items-center px-8">
         <h2>
           We found{" "}
           <span className="text-primary font-bold">{dogsAvailable}</span>{" "}
           available dogs!
         </h2>
+
         <div className="flex bg-white px-3 py-2 space-x-2 rounded">
           <p className="text-gray">Sort by:</p>
           <p className="text-primary">{sortType}</p>
@@ -110,27 +121,24 @@ const SearchResults = () => {
           );
         })}
       </div>
-      {/* Pagination */}
+      <div className="flex gap-4 w-full justify-center items-center">
+        <div className="flex items-center hover:font-bold cursor-pointer">
+          <ChevronLeftIcon
+            className="h-4 w-4"
+            onClick={() => console.log("back")}
+          />
+          <p>Prev Page</p>
+        </div>
+        <div className="flex items-center hover:font-bold cursor-pointer">
+          <p>Next Page</p>
+          <ChevronRightIcon
+            className="h-4 w-4"
+            onClick={() => handleNextPage}
+          />
+        </div>
+      </div>
     </div>
   );
 };
 
 export default SearchResults;
-
-{
-  /* <div className="flex justify-center my-4">
-        {Array.from({ length: Math.ceil(dogsAvailable / resultsPerPage) }).map(
-          (_, index) => (
-            <button
-              key={index}
-              className={`mx-1 px-2 py-1 rounded ${
-                currentPage === index + 1 ? "bg-primary text-white" : "bg-gray"
-              }`}
-              onClick={() => handlePageChange(index + 1)}
-            >
-              {index + 1}
-            </button>
-          )
-        )}
-      </div> */
-}

@@ -17,11 +17,11 @@ const Filters = () => {
   };
 
   return (
-    <div className="flex flex-col w-full">
+    <div className="flex flex w-full items-center space-x-2 mt-6">
       {selectedBreeds.length > 0 && (
         <p className="font-bold">Filters Applied: </p>
       )}
-      <div className="flex flex-wrap space-x-2 space-y-2 items-center mt-4">
+      <div className="flex flex-wrap space-x-2 space-y-2 items-center">
         {selectedBreeds.map((breed: string) => (
           <SelectedFilter title={breed} />
         ))}

@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import { DogInterface } from "../types/dog";
 
 import FavoritePreview from "./favoritePreview";
 
-const Favorites = () => {
+const FavoritesList = () => {
+  const navigate = useNavigate();
   const favorites = useSelector((state: any) => state.searchFilters.favorites);
   const [favoriteDogs, setFavoriteDogs] = useState<DogInterface[]>([]);
 
@@ -24,15 +26,27 @@ const Favorites = () => {
       });
   }, [favorites]);
 
+  const handleViewAllFavorites = () => {
+    console.log("View all favorites");
+    navigate("/discover/favorites");
+  };
+
   return (
     <div className="flex flex-col w-full h-full">
       <div className="flex justify-between w-full items-end border-b border-primary">
         <p className="text-primary font-bold text-xl">
           {`Favorites (${favoriteDogs.length})`}
         </p>
-        <p className="text-gray hover:font-bold cursor-pointer">View All</p>
+        {favoriteDogs.length > 0 && (
+          <p
+            className="text-gray hover:font-bold cursor-pointer"
+            onClick={handleViewAllFavorites}
+          >
+            View All
+          </p>
+        )}
       </div>
-      <div className="flex flex-col gap-4 mt-2">
+      <div className="flex flex-col gap-4 mt-2 max-h-[200px] overflow-scroll overflow-x-hidden">
         {favoriteDogs.length > 0 &&
           favoriteDogs.map((dog: DogInterface) => (
             <FavoritePreview dog={dog} />
@@ -42,4 +56,4 @@ const Favorites = () => {
   );
 };
 
-export default Favorites;
+export default FavoritesList;
