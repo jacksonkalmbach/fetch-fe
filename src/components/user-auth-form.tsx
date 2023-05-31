@@ -1,19 +1,24 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
 
+import { setName, setEmail } from "../store/reducers/user-slice";
+
+import Button from "./button";
 import Input from "./input";
 import Logo from "./icons/logo";
 
 const UserAuthForm = () => {
   const navigate = useNavigate();
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
+  const dispatch = useDispatch();
+  const [userName, setUserName] = useState("");
+  const [userEmail, setUserEmail] = useState("");
 
   const handleChange = (e: any) => {
     if (e.target.name === "name") {
-      setName(e.target.value);
+      setUserName(e.target.value);
     } else if (e.target.name === "email") {
-      setEmail(e.target.value);
+      setUserEmail(e.target.value);
     }
   };
 
@@ -27,13 +32,14 @@ const UserAuthForm = () => {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        name: name,
-        email: email,
+        name: userName,
+        email: userEmail,
       }),
     })
       .then((response) => {
         if (response.ok) {
-          console.log("Login successful!");
+          dispatch(setName(userName));
+          dispatch(setEmail(userEmail));
           navigate("/discover");
         } else {
           console.log("Login failed!");
@@ -68,7 +74,7 @@ const UserAuthForm = () => {
             placeholder="ex. John Doe"
             handleChange={handleChange}
             type="name"
-            value={name}
+            value={userName}
           />
         </div>
         <div className="flex flex-col w-full">
@@ -80,16 +86,11 @@ const UserAuthForm = () => {
             placeholder="name@example.com"
             handleChange={handleChange}
             type="email"
-            value={email}
+            value={userEmail}
           />
         </div>
         <div className="w-full flex justify-center">
-          <button
-            className="flex justify-center items-center bg-primary text-white rounded-md h-8 w-fit px-3 py-2 mt-4 hover:bg-primary/90 active:scale-95 transition"
-            type="submit"
-          >
-            Log In
-          </button>
+          <Button type="submit" buttonType="primary" text="Get Started" />
         </div>
       </form>
     </div>

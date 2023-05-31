@@ -2,9 +2,8 @@ import React, { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
+import Button from "./button";
 import Card from "./card";
-import Dropdown from "./select-small";
-// import ChevronDownIcon from "./icons/chevron-down";
 import ChevronLeftIcon from "./icons/chevron-left";
 import ChevronRightIcon from "./icons/chevron-right";
 import SelectSmall from "./select-small";
@@ -104,12 +103,12 @@ const SearchResults = () => {
         )}
         <div className="flex items-center gap-4">
           {favorites.length > 0 && (
-            <button
-              className="text-white font-bold border px-3 py-2 bg-primary rounded"
+            <Button
+              type="button"
+              buttonType="primary"
               onClick={handleFavoritesClick}
-            >
-              Go To Favorites
-            </button>
+              text="Go To Favorites"
+            />
           )}
           <SelectSmall />
         </div>

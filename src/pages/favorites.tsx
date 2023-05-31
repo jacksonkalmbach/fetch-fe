@@ -6,6 +6,7 @@ import { DogInterface } from "../types/dog";
 import Card from "../components/card";
 import BackIcon from "../components/icons/back";
 import Match from "../components/match";
+import Button from "../components/button";
 
 const Favorites = () => {
   const navigate = useNavigate();
@@ -53,14 +54,15 @@ const Favorites = () => {
           <BackIcon className="w-6 h-6 inline-block mr-2" />
           Back to Discover
         </div>
-        <div className="flex justify-between items-center">
+        <div className="flex justify-between items-center px-6">
           <h1 className="text-3xl font-bold w-full">My Favorites</h1>
-          <button
-            className="bg-primary text-white rounded cursor-pointer active:transform active:scale-90"
-            onClick={handleFindMatchClick}
-          >
-            Find a Match
-          </button>
+          <div className="flex w-full justify-end">
+            <Button
+              text="Find a Match"
+              onClick={handleFindMatchClick}
+              buttonType="primary"
+            />
+          </div>
         </div>
         <div className="flex w-full h-full justify-center flex-wrap gap-6">
           {favoriteDogs.length > 0 &&

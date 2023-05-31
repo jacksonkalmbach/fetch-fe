@@ -1,13 +1,17 @@
 import React, { useState } from "react";
+import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import FavoritesList from "./favorites-list";
 
+import FavoritesList from "./favorites-list";
 import FilterItem from "./filter-item";
 import Logo from "./icons/logo";
 
 const DashboardNav = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const [selectedFilter, setSelectedFilter] = useState<string>("");
+  const userName = useSelector((state: any) => state.userAuth.name);
+  const userEmail = useSelector((state: any) => state.userAuth.email);
 
   const handleSelected = (title: string) => {
     setSelectedFilter(title);
@@ -20,12 +24,12 @@ const DashboardNav = () => {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        // name: userName,
-        // email: userEmail,
+        name: userName,
+        email: userEmail,
       }),
     });
 
-    navigate("/login");
+    navigate("/");
   };
 
   return (

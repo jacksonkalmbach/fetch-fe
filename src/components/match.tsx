@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { DogInterface } from "../types/dog";
+
+import Button from "./button";
 import CloseIcon from "./icons/close";
 
 interface MatchProps {
@@ -86,9 +88,7 @@ const Match = ({ onClick }: MatchProps) => {
                     <p>Breed: {match.breed}</p>
                     <p>Zip Code: {match.zip_code}</p>
                   </div>
-                  <button className="bg-primary text-white px-4 py-2 rounded-md mt-4">
-                    Adopt {match.name}
-                  </button>
+                  <Button text={`Adopt ${match.name}`} buttonType="primary" />
                 </div>
               </div>
               <div className="flex gap-4 mt-4"></div>
