@@ -5,6 +5,7 @@ interface SearchFiltersState {
   zipCodes: string[];
   minAge: number;
   maxAge: number;
+  sort: string;
   favorites: string[];
 }
 
@@ -12,7 +13,8 @@ const initialState: SearchFiltersState = {
   breeds: [],
   zipCodes: [],
   minAge: 0,
-  maxAge: 0,
+  maxAge: 20,
+  sort: "asc",
   favorites: [],
 };
 
@@ -43,6 +45,9 @@ export const searchFiltersSlice = createSlice({
     setMaxAge: (state, action) => {
       state.maxAge = action.payload;
     },
+    setSort: (state, action) => {
+      state.sort = action.payload;
+    },
     addToFavorites: (state, action) => {
       state.favorites.push(action.payload);
     },
@@ -62,6 +67,7 @@ export const {
   removeZipCode,
   setMinAge,
   setMaxAge,
+  setSort,
   addToFavorites,
   removeFromFavorites,
 } = searchFiltersSlice.actions;

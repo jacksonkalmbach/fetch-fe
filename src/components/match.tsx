@@ -84,7 +84,7 @@ const Match = ({ onClick }: MatchProps) => {
                     </div>
                     <p>Age: {match.age}</p>
                     <p>Breed: {match.breed}</p>
-                    <p>Location: {match.zip_code}</p>
+                    <p>Zip Code: {match.zip_code}</p>
                   </div>
                   <button className="bg-primary text-white px-4 py-2 rounded-md mt-4">
                     Adopt {match.name}

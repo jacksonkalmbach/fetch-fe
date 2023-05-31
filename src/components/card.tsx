@@ -43,12 +43,12 @@ const Card = ({ id, name, breed, age, img, zipCode }: CardProps) => {
       <div className="relative w-[250px] h-[250px]">
         {favorites.includes(id) ? (
           <FilledHeartIcon
-            className="absolute h-6 w-6 top-2 right-2 text-primary bg-white rounded-full p-1 z-10 cursor-pointer"
+            className="absolute h-6 w-6 top-2 right-2 text-primary bg-white rounded-full p-1 z-10 cursor-pointer shadow-md"
             onClick={handleFavoriteClick}
           />
         ) : (
           <OutlineHeartIcon
-            className="absolute h-6 w-6 top-2 right-2 text-primary bg-white rounded-full p-1 z-10 cursor-pointer"
+            className="absolute h-6 w-6 top-2 right-2 text-primary bg-white rounded-full p-1 z-10 cursor-pointer shadow-md"
             onClick={handleFavoriteClick}
           />
         )}

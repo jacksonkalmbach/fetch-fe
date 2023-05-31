@@ -27,7 +27,6 @@ const FavoritesList = () => {
   }, [favorites]);
 
   const handleViewAllFavorites = () => {
-    console.log("View all favorites");
     navigate("/discover/favorites");
   };
 

@@ -30,6 +30,7 @@ const Favorites = () => {
 
   const handleBackClick = () => {
     navigate("/discover");
+    console.log("Back to Discover");
   };
 
   const handleFindMatchClick = () => {
@@ -45,11 +46,11 @@ const Favorites = () => {
       <Outlet />
       {showMatch && <Match onClick={handleClose} />}
       <div className="flex flex-col w-full h-full bg-lightGray p-6 gap-10">
-        <div className="flex w-fit items-center p-2 border border-transparent rounded cursor-pointer hover:border-gray hover:border">
-          <BackIcon
-            className="w-6 h-6 inline-block mr-2"
-            onClick={handleBackClick}
-          />
+        <div
+          className="flex w-fit items-center p-2 border border-transparent rounded cursor-pointer hover:border-gray hover:border"
+          onClick={handleBackClick}
+        >
+          <BackIcon className="w-6 h-6 inline-block mr-2" />
           Back to Discover
         </div>
         <div className="flex justify-between items-center">
