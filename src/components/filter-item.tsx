@@ -7,6 +7,7 @@ import {
 } from "../store/reducers/search-filters-slice";
 
 import BreedOption from "./breed-option";
+import Input from "./input";
 
 interface FilterItemProps {
   title: string;
@@ -23,46 +24,57 @@ const FilterItem = ({ title, selected, name }: FilterItemProps) => {
   const [showOptions, setShowOptions] = useState<boolean>(false);
 
   useEffect(() => {
-    fetch("https://frontend-take-home-service.fetch.com/dogs/breeds", {
-      method: "GET",
-      credentials: "include",
-    })
-      .then((response) => response.json())
-      .then((data) => {
+    const fetchBreeds = async () => {
+      try {
+        const response = await fetch(
+          "https://frontend-take-home-service.fetch.com/dogs/breeds",
+          {
+            method: "GET",
+            credentials: "include",
+          }
+        );
+        const data = await response.json();
         setBreeds(data);
-      });
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    fetchBreeds();
   }, []);
 
   useEffect(() => {
-    const newFilteredBreeds = breeds.filter((breed) => {
-      return breed.toLocaleLowerCase().includes(searchField);
-    });
-
+    const newFilteredBreeds = breeds.filter((breed) =>
+      breed.toLowerCase().includes(searchField)
+    );
     setFilteredBreeds(newFilteredBreeds);
   }, [searchField, breeds]);
 
   const onSearchChange = (event: ChangeEvent<HTMLInputElement>) => {
-    if (event.target.name === "breed") {
-      const searchFieldString = event.target.value.toLowerCase();
-      setSearchField(searchFieldString);
-    } else if (event.target.name === "minAge") {
-      dispatch(setMinAge(event.target.value));
-    } else if (event.target.name === "maxAge") {
-      dispatch(setMaxAge(event.target.value));
-    } else if (event.target.name === "zipCode") {
-      const zipCode = event.target.value;
-      if (/^\d+$/.test(zipCode) && zipCode.length === 5) {
-        dispatch(addZipCode(zipCode));
-      }
+    const inputValue = event.target.value;
+    switch (event.target.name) {
+      case "breed":
+        setSearchField(inputValue.toLowerCase());
+        break;
+      case "minAge":
+        dispatch(setMinAge(inputValue));
+        break;
+      case "maxAge":
+        dispatch(setMaxAge(inputValue));
+        break;
+      case "zipCode":
+        const zipCode = inputValue.trim();
+        if (/^\d+$/.test(zipCode) && zipCode.length === 5) {
+          dispatch(addZipCode(zipCode));
+        }
+        break;
+      default:
+        break;
     }
   };
 
   useEffect(() => {
-    if (searchField.length > 0) {
-      setShowOptions(true);
-    } else {
-      setShowOptions(false);
-    }
+    setShowOptions(searchField.length > 0);
   }, [searchField]);
 
   return (
@@ -77,9 +89,9 @@ const FilterItem = ({ title, selected, name }: FilterItemProps) => {
         maxLength={name === "zipCode" ? 5 : undefined}
       />
       {title === "Breed" && showOptions && (
-        <div className="max-h-[150px] w-full overflow-scroll overflow-x-hidden">
+        <div className="max-h-[150px] w-full overflow-y-auto">
           {filteredBreeds.map((breed: string) => (
-            <BreedOption title={breed} />
+            <BreedOption key={breed} title={breed} />
           ))}
         </div>
       )}

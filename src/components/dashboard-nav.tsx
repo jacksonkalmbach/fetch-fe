@@ -1,14 +1,13 @@
 import React, { useState } from "react";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
+import Logo from "./icons/logo";
 import FavoritesList from "./favorites-list";
 import FilterItem from "./filter-item";
-import Logo from "./icons/logo";
 
 const DashboardNav = () => {
   const navigate = useNavigate();
-  const dispatch = useDispatch();
   const [selectedFilter, setSelectedFilter] = useState<string>("");
   const userName = useSelector((state: any) => state.userAuth.name);
   const userEmail = useSelector((state: any) => state.userAuth.email);
@@ -17,19 +16,22 @@ const DashboardNav = () => {
     setSelectedFilter(title);
   };
 
-  const handleLogout = () => {
-    fetch("https://frontend-take-home-service.fetch.com/auth/logout", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        name: userName,
-        email: userEmail,
-      }),
-    });
-
-    navigate("/");
+  const handleLogout = async () => {
+    try {
+      await fetch("https://frontend-take-home-service.fetch.com/auth/logout", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          name: userName,
+          email: userEmail,
+        }),
+      });
+      navigate("/");
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
@@ -48,23 +50,23 @@ const DashboardNav = () => {
               title="Breed"
               name="breed"
               onClick={() => handleSelected("Breed")}
-              selected={selectedFilter === "Breed" ? true : false}
+              selected={selectedFilter === "Breed"}
             />
           </div>
           <FilterItem
             title="Minimum Age"
             name="minAge"
-            selected={selectedFilter === "Minimum Age" ? true : false}
+            selected={selectedFilter === "Minimum Age"}
           />
           <FilterItem
             title="Maximum Age"
             name="maxAge"
-            selected={selectedFilter === "Maximum Age" ? true : false}
+            selected={selectedFilter === "Maximum Age"}
           />
           <FilterItem
             title="Zip Code"
             name="zipCode"
-            selected={selectedFilter === "Zip Code" ? true : false}
+            selected={selectedFilter === "Zip Code"}
           />
           <FavoritesList />
         </div>

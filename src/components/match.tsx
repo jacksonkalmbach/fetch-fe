@@ -75,15 +75,18 @@ const Match = ({ onClick }: MatchProps) => {
               </div>
               <h1 className="text-3xl font-bold mb-4">It's a Match!</h1>
               <div className="flex justify-between w-full bg-lightGray p-4 rounded-md">
-                <img src={match.img} alt={match.name} className="w-1/2" />
-                <div className="flex flex-col w-full items-center justify-start  p-2">
-                  <h2 className="text-2xl font-bold w-full px-4">
+                <div className="flex flex-col w-1/2 items-center justify-start">
+                  <img
+                    src={match.img}
+                    alt={match.name}
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+                <div className="flex flex-col w-full items-center justify-center  p-2">
+                  <h2 className="text-2xl font-bold w-full px-4 text-center">
                     {match.name}
                   </h2>
-                  <div className="flex flex-col gap-2 w-full h-full justify-start items-start px-4 mt-6">
-                    <div>
-                      <p className="font-bold text-l">Details:</p>
-                    </div>
+                  <div className="flex flex-col gap-2 w-full h-full justify-center items-center px-4 my-6">
                     <p>Age: {match.age}</p>
                     <p>Breed: {match.breed}</p>
                     <p>Zip Code: {match.zip_code}</p>

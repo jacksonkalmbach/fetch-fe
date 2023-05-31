@@ -2,7 +2,6 @@ import React from "react";
 import { useSelector, useDispatch } from "react-redux";
 
 import SelectedFilter from "./selected-filter";
-
 import {
   clearBreeds,
   clearZipCodes,
@@ -10,7 +9,6 @@ import {
 
 const Filters = () => {
   const dispatch = useDispatch();
-
   const selectedBreeds = useSelector(
     (state: any) => state.searchFilters.breeds
   );
@@ -23,25 +21,29 @@ const Filters = () => {
     dispatch(clearZipCodes());
   };
 
+  const renderSelectedFilters = (filters: string[], type: string) => {
+    return filters.map((filter: string) => (
+      <SelectedFilter key={filter} title={filter} type={type} />
+    ));
+  };
+
   return (
     <div className="flex w-full items-center space-x-2 mt-6">
       <div className="flex items-center">
-        {(selectedBreeds.length > 0 || selectedZipCodes.length > 0) && (
+        {selectedBreeds.length > 0 || selectedZipCodes.length > 0 ? (
           <p className="font-bold">Filters Applied: </p>
-        )}
+        ) : null}
       </div>
 
       <div className="flex items-center space-x-2">
-        {selectedBreeds.map((breed: string) => (
-          <SelectedFilter title={breed} type="breed" />
-        ))}
+        {renderSelectedFilters(selectedBreeds, "breed")}
       </div>
+
       <div className="flex items-center space-x-2">
-        {selectedZipCodes.map((zipCode: string) => (
-          <SelectedFilter title={zipCode} type="zipCode" />
-        ))}
+        {renderSelectedFilters(selectedZipCodes, "zipCode")}
       </div>
-      {(selectedBreeds.length > 1 || selectedZipCodes > 1) && (
+
+      {(selectedBreeds.length > 1 || selectedZipCodes.length > 1) && (
         <p className="cursor-pointer text-gray" onClick={handleClearAll}>
           Clear All
         </p>

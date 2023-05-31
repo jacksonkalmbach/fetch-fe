@@ -9,32 +9,27 @@ interface BreedOptionProps {
 const BreedOption = ({ title }: BreedOptionProps) => {
   const dispatch = useDispatch();
   const breeds = useSelector((state: any) => state.searchFilters.breeds);
-
-  const [selected, setSelected] = useState(false);
-
-  useEffect(() => {
-    if (breeds.includes(title)) {
-      setSelected(true);
-    } else {
-      setSelected(false);
-    }
-  }, [breeds, title]);
+  const isSelected = breeds.includes(title);
 
   const handleClick = () => {
-    if (breeds.includes(title)) {
+    if (isSelected) {
       return;
     } else {
       dispatch(addBreed(title));
-      setSelected(true);
     }
   };
+
+  useEffect(() => {
+    setSelected(isSelected);
+  }, [isSelected]);
+
+  const [selected, setSelected] = useState<boolean>(isSelected);
 
   return (
     <div
       className={`flex justify-start w-full max-h-[40px] overflow-hidden hover:bg-lightGray p-2 cursor-pointer ${
         selected && "font-bold text-primary"
       }`}
-      key={title}
       onClick={handleClick}
     >
       {title}

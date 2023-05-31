@@ -51,7 +51,7 @@ const UserAuthForm = () => {
   };
 
   return (
-    <div className="flex flex-col w-1/3 justify-center items-center shadow-xl rounded-lg bg-white p-10">
+    <div className="flex flex-col w-fit justify-center items-center shadow-xl rounded-lg bg-white p-10 md:w-1/3">
       <div className="w-fit flex items-center gap-2 mb-4">
         <Logo />
         <h1 className="text-4xl text-primary font-bold">PETFETCH</h1>

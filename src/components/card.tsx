@@ -1,8 +1,9 @@
-import React, { useState } from "react";
+// Card.tsx
+import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 
-import FilledHeartIcon from "./icons/filled-heart";
-import OutlineHeartIcon from "./icons/outline-heart";
+import HeartIcon from "./icons/heart-icon";
+import Image from "./image";
 
 import {
   addToFavorites,
@@ -21,38 +22,21 @@ interface CardProps {
 const Card = ({ id, name, breed, age, img, zipCode }: CardProps) => {
   const dispatch = useDispatch();
   const favorites = useSelector((state: any) => state.searchFilters.favorites);
-
-  const [favorite, setFavorite] = useState(false);
+  const favorite = favorites.includes(id);
 
   const handleFavoriteClick = () => {
-    if (!favorite) {
-      if (favorites.includes(id)) {
-        return;
-      } else {
-        dispatch(addToFavorites(id));
-        setFavorite(true);
-      }
-    } else {
+    if (!favorite && !favorites.includes(id)) {
+      dispatch(addToFavorites(id));
+    } else if (favorite) {
       dispatch(removeFromFavorites(id));
-      setFavorite(false);
     }
   };
 
   return (
     <div className="flex flex-col max-w-[270px] h-fit justify-center items-center px-2 py-4 bg-white rounded-lg">
       <div className="relative w-[250px] h-[250px]">
-        {favorites.includes(id) ? (
-          <FilledHeartIcon
-            className="absolute h-6 w-6 top-2 right-2 text-primary bg-white rounded-full p-1 z-10 cursor-pointer shadow-md"
-            onClick={handleFavoriteClick}
-          />
-        ) : (
-          <OutlineHeartIcon
-            className="absolute h-6 w-6 top-2 right-2 text-primary bg-white rounded-full p-1 z-10 cursor-pointer shadow-md"
-            onClick={handleFavoriteClick}
-          />
-        )}
-        <img className="w-full h-full object-cover" src={img} alt={name} />
+        <HeartIcon favorite={favorite} onClick={handleFavoriteClick} />
+        <Image img={img} name={name} />
       </div>
       <div className="w-full">
         <div className="flex justify-center items-center">
@@ -68,7 +52,6 @@ const Card = ({ id, name, breed, age, img, zipCode }: CardProps) => {
             {zipCode}
           </p>
         </div>
-        <div className="flex justify-start text-gray"></div>
       </div>
     </div>
   );

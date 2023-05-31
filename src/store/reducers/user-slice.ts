@@ -6,7 +6,7 @@ interface UserState {
 }
 
 const initialState: UserState = {
-  name: "Jack",
+  name: "",
   email: "",
 };
 

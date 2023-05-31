@@ -4,22 +4,25 @@ import { useSelector } from "react-redux";
 
 const Header = () => {
   const navigate = useNavigate();
-  // const userName = useSelector((state: any) => state.user.name);
-  // const userEmail = useSelector((state: any) => state.user.email);
+  const userName = useSelector((state: any) => state.user.name);
+  const userEmail = useSelector((state: any) => state.user.email);
 
-  const handleLogout = () => {
-    fetch("https://frontend-take-home-service.fetch.com/auth/logout", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        // name: userName,
-        // email: userEmail,
-      }),
-    });
-
-    navigate("/login");
+  const handleLogout = async () => {
+    try {
+      await fetch("https://frontend-take-home-service.fetch.com/auth/logout", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          name: userName,
+          email: userEmail,
+        }),
+      });
+      navigate("/login");
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
