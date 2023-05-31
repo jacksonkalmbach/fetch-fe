@@ -9,7 +9,7 @@ interface SearchFiltersState {
 }
 
 const initialState: SearchFiltersState = {
-  breeds: ["German Shepard", "Vizsla"],
+  breeds: [],
   zipCodes: [],
   minAge: 0,
   maxAge: 0,

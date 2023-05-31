@@ -20,13 +20,18 @@ interface CardProps {
 
 const Card = ({ id, name, breed, age, img, zipCode }: CardProps) => {
   const dispatch = useDispatch();
+  const favorites = useSelector((state: any) => state.searchFilters.favorites);
 
   const [favorite, setFavorite] = useState(false);
 
   const handleFavoriteClick = () => {
     if (!favorite) {
-      dispatch(addToFavorites(id));
-      setFavorite(true);
+      if (favorites.includes(id)) {
+        return;
+      } else {
+        dispatch(addToFavorites(id));
+        setFavorite(true);
+      }
     } else {
       dispatch(removeFromFavorites(id));
       setFavorite(false);
@@ -36,7 +41,7 @@ const Card = ({ id, name, breed, age, img, zipCode }: CardProps) => {
   return (
     <div className="flex flex-col max-w-[300px] justify-center items-center px-2 py-4 bg-white rounded-lg">
       <div className="relative w-[250px] h-[250px]">
-        {favorite ? (
+        {favorites.includes(id) ? (
           <FilledHeartIcon
             className="absolute h-6 w-6 top-2 right-2 text-primary bg-white rounded-full p-1 z-10 cursor-pointer"
             onClick={handleFavoriteClick}
