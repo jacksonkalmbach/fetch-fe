@@ -7,7 +7,6 @@ import {
 } from "../store/reducers/search-filters-slice";
 
 import BreedOption from "./breed-option";
-import Input from "./input";
 
 interface FilterItemProps {
   title: string;

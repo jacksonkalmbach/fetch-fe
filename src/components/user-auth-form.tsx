@@ -7,6 +7,7 @@ import { setName, setEmail } from "../store/reducers/user-slice";
 import Button from "./button";
 import Input from "./input";
 import Logo from "./icons/logo";
+import FormInput from "./form-input";
 
 const UserAuthForm = () => {
   const navigate = useNavigate();
@@ -64,31 +65,22 @@ const UserAuthForm = () => {
         className="w-full h-full flex flex-col p-5 gap-4"
         onSubmit={handleSubmit}
       >
-        <div className="flex flex-col w-full">
-          <label className="font-bold" htmlFor="name">
-            Name
-          </label>
-
-          <Input
-            name="name"
-            placeholder="ex. John Doe"
-            handleChange={handleChange}
-            type="name"
-            value={userName}
-          />
-        </div>
-        <div className="flex flex-col w-full">
-          <label className="font-bold" htmlFor="email">
-            Email
-          </label>
-          <Input
-            name="email"
-            placeholder="name@example.com"
-            handleChange={handleChange}
-            type="email"
-            value={userEmail}
-          />
-        </div>
+        <FormInput
+          label="Name"
+          name="name"
+          placeholder="ex. John Doe"
+          handleChange={handleChange}
+          type="text"
+          value={userName}
+        />
+        <FormInput
+          label="Email"
+          name="email"
+          placeholder="name@example.com"
+          handleChange={handleChange}
+          type="email"
+          value={userEmail}
+        />
         <div className="w-full flex justify-center">
           <Button type="submit" buttonType="primary" text="Get Started" />
         </div>
