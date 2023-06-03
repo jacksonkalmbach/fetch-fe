@@ -21,6 +21,8 @@ const SearchResults = () => {
   const [dogs, setDogs] = useState<Dog[]>([]);
   const [dogsAvailable, setDogsAvailable] = useState<number>(0);
   const [pageNumber, setPageNumber] = useState<number>(1);
+  const [nextPage, setNextPage] = useState<string>("");
+  const [prevPage, setPrevPage] = useState<string>("");
   const resultsPerPage = 16;
 
   const { minAge, maxAge, breeds, zipCodes, sort } = useSelector(
@@ -46,12 +48,15 @@ const SearchResults = () => {
       .then((data) => {
         setSearch(data.resultIds);
         setDogsAvailable(data.total);
+        setNextPage(data.next);
+        setPrevPage(data.prev);
       });
   };
 
   useEffect(() => {
     const url = `${apiUrl}${searchEndpoint}?ageMin=${minAge}&ageMax=${maxAge}${searchZipCodes}${searchBreeds}&size=${resultsPerPage}&sort=breed:${sort}`;
     fetchData(url);
+    setPageNumber(1);
   }, [minAge, maxAge, searchBreeds, searchZipCodes, sort, resultsPerPage]);
 
   useEffect(() => {
@@ -74,11 +79,21 @@ const SearchResults = () => {
     if (pageNumber < Math.ceil(dogsAvailable / resultsPerPage)) {
       setPageNumber((prevPageNumber) => prevPageNumber + 1);
     }
+
+    if (nextPage) {
+      const url = new URL(nextPage, apiUrl);
+      fetchData(url.href);
+    }
   };
 
   const handlePreviousPage = () => {
     if (pageNumber > 1) {
       setPageNumber((prevPageNumber) => prevPageNumber - 1);
+    }
+
+    if (prevPage) {
+      const url = new URL(prevPage, apiUrl);
+      fetchData(url.href);
     }
   };
 
@@ -105,16 +120,6 @@ const SearchResults = () => {
   const allPages = Math.ceil(dogsAvailable / resultsPerPage);
   const currentPage = Math.min(pageNumber, allPages);
 
-  const renderStats = () => (
-    <div className="flex">
-      Viewing{" "}
-      <p className="font-bold px-2 text-primary">
-        {Math.min(resultsPerPage, dogsAvailable)}
-      </p>{" "}
-      of <p className="font-bold px-2 text-primary">{dogsAvailable}</p>
-    </div>
-  );
-
   return (
     <div className="flex flex-col gap-4 max-h-full overflow-hidden">
       <SearchResultHeader
@@ -131,7 +136,6 @@ const SearchResults = () => {
           onNextPage={handleNextPage}
           onPreviousPage={handlePreviousPage}
         />
-        {renderStats()}
       </div>
     </div>
   );
