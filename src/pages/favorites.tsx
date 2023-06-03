@@ -35,6 +35,9 @@ const Favorites = () => {
   };
 
   const handleFindMatchClick = () => {
+    if (favoriteDogs.length === 0) {
+      return;
+    }
     setShowMatch(true);
   };
 
@@ -54,13 +57,15 @@ const Favorites = () => {
           <BackIcon className="w-6 h-6 inline-block mr-2" />
           Back to Discover
         </div>
-        <div className="flex justify-between items-center px-6">
-          <h1 className="text-3xl font-bold w-full">My Favorites</h1>
-          <div className="flex w-full justify-end">
+        <div className="flex flex-col w-full items-center px-6 gap-4 md:flex-row">
+          <h1 className="text-center text-3xl font-bold w-full md:text-start">
+            My Favorites
+          </h1>
+          <div className="flex w-full justify-center md:justify-end">
             <Button
               text="Find a Match"
               onClick={handleFindMatchClick}
-              buttonType="primary"
+              buttonType={favoriteDogs.length > 0 ? "primary" : "disabled"}
             />
           </div>
         </div>

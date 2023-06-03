@@ -35,7 +35,7 @@ const DashboardNav = () => {
   };
 
   return (
-    <div className="flex flex-col min-w-[280px] h-screen bg-white p-6 border-r-2 border-lightGray overflow-hidden">
+    <div className="hidden md:flex flex-col min-w-[280px] h-screen bg-white p-6 border-r-2 border-lightGray overflow-hidden">
       <div className="flex mb-4 justify-center items-center w-full space-x-2">
         <Logo />
         <h1 className="text-primary font-bold text-3xl">PETFETCH</h1>

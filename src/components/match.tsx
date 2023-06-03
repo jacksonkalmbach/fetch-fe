@@ -56,22 +56,18 @@ const Match = ({ onClick }: MatchProps) => {
       <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-fit h-fit bg-white z-30 flex flex-col items-center justify-start p-12 shadow-md rounded-md">
         {isLoading ? (
           <div className="flex flex-col justify-center items-center max-w-1/2 max-h-1/2 p-6 gap-4">
-            <div>Finding your match...</div>
+            <div className="flex text-center flex-wrap">
+              Finding your match...
+            </div>
             <div className="flex justify-center items-center">
               <div className="animate-spin rounded-full h-16 w-16 border-t-2 border-b-2 border-primary"></div>
             </div>
           </div>
         ) : (
           match && (
-            <div className="flex flex-col items-center justify-center">
-              <div className="flex w-full justify-end px-6 ">
-                <div
-                  className="flex items-center space-x-2 w-fit px-3 py-2 text-gray cursor-pointer border-transparent rounded hover:border hover:border-gray"
-                  onClick={onClick}
-                >
-                  <CloseIcon className="w-6 h-6" />
-                  Close
-                </div>
+            <div className="flex flex-col items-center justify-center gap-4 w-full">
+              <div className="relative top-0 right-0  flex w-full justify-end md:justify-end md:px-6 ">
+                <Button buttonType="outlined" onClick={onClick} text="Close" />
               </div>
               <h1 className="text-3xl font-bold mb-4">It's a Match!</h1>
               <div className="flex justify-between w-full bg-lightGray p-4 rounded-md">
