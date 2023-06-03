@@ -39,15 +39,15 @@ const Card = ({ id, name, breed, age, img, zipCode }: CardProps) => {
         <Image img={img} name={name} />
       </div>
       <div className="w-full">
-        <div className="flex justify-center items-center">
+        <div className="flex justify-between items-center">
           <h3 className="font-bold text-3xl">{name}</h3>
-        </div>
-        <div className="flex text-gray w-full justify-evenly items-center">
-          <p className="text-gray-400">{breed}</p>
           <p className="flex items-center justify-center gap-1 text-gray-400 px-2">
             <span className="material-symbols-outlined">cake</span> {age}
           </p>
-          <p className="flex items-center justify-center gap-1 text-gray-400">
+        </div>
+        <div className="flex text-gray w-full justify-between items-center">
+          <p className="text-gray-400">{breed}</p>
+          <p className="flex items-center justify-center gap-1 text-gray-400 text-gray">
             <span className="material-symbols-outlined">location_on</span>{" "}
             {zipCode}
           </p>
