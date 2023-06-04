@@ -16,7 +16,7 @@ const Pagination = ({
   onNextPage,
 }: PaginationProps) => {
   return (
-    <div className="flex  w-full gap-8 justify-center items-center">
+    <div className="flex w-full gap-8 pt-3 justify-center items-center">
       <div
         className={`flex items-center ${
           currentPage > 1
