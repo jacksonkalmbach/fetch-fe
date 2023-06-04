@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { Outlet, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
-
 import { DogInterface } from "../types/dog";
+import { RootState } from "../store/store";
+
 import Card from "../components/card";
 import BackIcon from "../components/icons/back";
 import Match from "../components/match";
@@ -10,12 +11,16 @@ import Button from "../components/button";
 
 const Favorites = () => {
   const navigate = useNavigate();
-  const favorites = useSelector((state: any) => state.searchFilters.favorites);
+  const favorites = useSelector(
+    (state: RootState) => state.searchFilters.favorites
+  );
   const [favoriteDogs, setFavoriteDogs] = useState<DogInterface[]>([]);
   const [showMatch, setShowMatch] = useState(false);
 
+  const url = process.env.REACT_APP_BASE_API_URL;
+
   useEffect(() => {
-    fetch("https://frontend-take-home-service.fetch.com/dogs", {
+    fetch(`${url}/dogs`, {
       method: "POST",
       credentials: "include",
       headers: {
@@ -27,11 +32,10 @@ const Favorites = () => {
       .then((data) => {
         setFavoriteDogs(data);
       });
-  }, [favorites]);
+  }, [favorites, url]);
 
   const handleBackClick = () => {
     navigate("/discover");
-    console.log("Back to Discover");
   };
 
   const handleFindMatchClick = () => {

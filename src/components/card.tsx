@@ -10,6 +10,7 @@ import {
   addToFavorites,
   removeFromFavorites,
 } from "../store/reducers/search-filters-slice";
+import { RootState } from "../store/store";
 
 interface CardProps {
   id: string;
@@ -22,8 +23,11 @@ interface CardProps {
 
 const Card = ({ id, name, breed, age, img, zipCode }: CardProps) => {
   const dispatch = useDispatch();
-  const favorites = useSelector((state: any) => state.searchFilters.favorites);
+  const favorites = useSelector(
+    (state: RootState) => state.searchFilters.favorites
+  );
   const favorite = favorites.includes(id);
+  const url = process.env.REACT_APP_BASE_API_URL;
 
   const [city, setCity] = useState("");
   const [state, setState] = useState("");
@@ -47,7 +51,7 @@ const Card = ({ id, name, breed, age, img, zipCode }: CardProps) => {
     const abortController = new AbortController();
     const signal = abortController.signal;
 
-    fetch("https://frontend-take-home-service.fetch.com/locations", {
+    fetch(`${url}/locations`, {
       method: "POST",
       credentials: "include",
       headers: {
@@ -85,7 +89,7 @@ const Card = ({ id, name, breed, age, img, zipCode }: CardProps) => {
       isMounted = false;
       abortController.abort();
     };
-  }, [zipCode]);
+  }, [zipCode, url]);
 
   return (
     <div className="flex flex-col max-w-[270px] h-fit justify-center items-center px-2 py-4 bg-white rounded-lg">

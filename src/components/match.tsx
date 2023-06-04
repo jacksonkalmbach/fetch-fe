@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
+import { RootState } from "../store/store";
 import { DogInterface } from "../types/dog";
 
 import Button from "./button";
@@ -10,14 +11,18 @@ interface MatchProps {
 }
 
 const Match = ({ onClick }: MatchProps) => {
-  const favorites = useSelector((state: any) => state.searchFilters.favorites);
+  const favorites = useSelector(
+    (state: RootState) => state.searchFilters.favorites
+  );
   const [matchId, setMatchId] = useState<string[]>([]);
   const [match, setMatch] = useState<DogInterface>({} as DogInterface);
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
+  const url = process.env.REACT_APP_BASE_API_URL;
+
   useEffect(() => {
     try {
-      fetch("https://frontend-take-home-service.fetch.com/dogs/match", {
+      fetch(`${url}/dogs/match`, {
         method: "POST",
         credentials: "include",
         headers: {
@@ -32,11 +37,11 @@ const Match = ({ onClick }: MatchProps) => {
     } catch (error) {
       console.log("Error finding a match in Match.tsx", error);
     }
-  }, [favorites]);
+  }, [favorites, url]);
 
   useEffect(() => {
     try {
-      fetch("https://frontend-take-home-service.fetch.com/dogs", {
+      fetch(`${url}/dogs`, {
         method: "POST",
         credentials: "include",
         headers: {
@@ -47,7 +52,7 @@ const Match = ({ onClick }: MatchProps) => {
         .then((response) => response.json())
         .then((data) => {
           setMatch(data[0]);
-          fetch("https://frontend-take-home-service.fetch.com/dogs/match", {
+          fetch(`${url}/dogs/match`, {
             method: "POST",
             credentials: "include",
             headers: {
@@ -59,7 +64,7 @@ const Match = ({ onClick }: MatchProps) => {
     } catch (error) {
       console.log("Error getting match details in Match.tsx", error);
     }
-  }, [favorites, matchId]);
+  }, [favorites, matchId, url]);
 
   useEffect(() => {
     setTimeout(() => {

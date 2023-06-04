@@ -1,8 +1,6 @@
 import React from "react";
 
 import Button from "./button";
-import FiltersIcon from "./icons/filters";
-import Logo from "./icons/logo";
 import SelectSmall from "./select-small";
 
 interface SearchResultHeaderProps {

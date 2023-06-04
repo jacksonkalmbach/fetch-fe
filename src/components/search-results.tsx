@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { RootState } from "../store/store";
 
 import Card from "./card";
 import Pagination from "./pagination";
@@ -26,7 +27,7 @@ const SearchResults = () => {
   const resultsPerPage = 16;
 
   const { minAge, maxAge, breeds, zipCodes, sort } = useSelector(
-    (state: any) => state.searchFilters
+    (state: RootState) => state.searchFilters
   );
 
   const searchBreeds = breeds
@@ -36,7 +37,7 @@ const SearchResults = () => {
     .map((zipCode: string) => `&zipCodes=${encodeURIComponent(zipCode)}`)
     .join("");
 
-  const apiUrl = "https://frontend-take-home-service.fetch.com";
+  const apiUrl = process.env.REACT_APP_BASE_API_URL;
   const searchEndpoint = "/dogs/search";
 
   const fetchData = (url: string) => {
@@ -61,7 +62,16 @@ const SearchResults = () => {
     const url = `${apiUrl}${searchEndpoint}?ageMin=${minAge}&ageMax=${maxAge}${searchZipCodes}${searchBreeds}&size=${resultsPerPage}&sort=breed:${sort}`;
     fetchData(url);
     setPageNumber(1);
-  }, [minAge, maxAge, searchBreeds, searchZipCodes, sort, resultsPerPage]);
+  }, [
+    minAge,
+    maxAge,
+    searchBreeds,
+    searchZipCodes,
+    sort,
+    resultsPerPage,
+    apiUrl,
+    searchEndpoint,
+  ]);
 
   useEffect(() => {
     const url = `${apiUrl}/dogs`;
@@ -82,7 +92,7 @@ const SearchResults = () => {
     } catch (error) {
       console.log("Error getting dogs in SearchResults.tsx", error);
     }
-  }, [search]);
+  }, [search, apiUrl]);
 
   const handleNextPage = () => {
     if (pageNumber < Math.ceil(dogsAvailable / resultsPerPage)) {

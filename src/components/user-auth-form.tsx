@@ -11,6 +11,7 @@ import FormInput from "./form-input";
 const UserAuthForm = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+
   const [userName, setUserName] = useState("");
   const [userEmail, setUserEmail] = useState("");
 

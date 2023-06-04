@@ -1,13 +1,16 @@
 import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { clearFavorites } from "../store/reducers/search-filters-slice";
+import { RootState } from "../store/store";
 import { DogInterface } from "../types/dog";
 
 import FavoritePreview from "./favoritePreview";
 
 const FavoritesList = () => {
   const dispatch = useDispatch();
-  const favorites = useSelector((state: any) => state.searchFilters.favorites);
+  const favorites = useSelector(
+    (state: RootState) => state.searchFilters.favorites
+  );
   const [favoriteDogs, setFavoriteDogs] = useState<DogInterface[]>([]);
 
   useEffect(() => {

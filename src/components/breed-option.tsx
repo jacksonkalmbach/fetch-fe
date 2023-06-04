@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { addBreed } from "../store/reducers/search-filters-slice";
+import { RootState } from "../store/store";
 
 interface BreedOptionProps {
   title: string;
@@ -8,7 +9,7 @@ interface BreedOptionProps {
 
 const BreedOption = ({ title }: BreedOptionProps) => {
   const dispatch = useDispatch();
-  const breeds = useSelector((state: any) => state.searchFilters.breeds);
+  const breeds = useSelector((state: RootState) => state.searchFilters.breeds);
   const isSelected = breeds.includes(title);
 
   const handleClick = () => {

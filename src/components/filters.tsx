@@ -6,14 +6,15 @@ import {
   clearBreeds,
   clearZipCodes,
 } from "../store/reducers/search-filters-slice";
+import { RootState } from "../store/store";
 
 const Filters = () => {
   const dispatch = useDispatch();
   const selectedBreeds = useSelector(
-    (state: any) => state.searchFilters.breeds
+    (state: RootState) => state.searchFilters.breeds
   );
   const selectedZipCodes = useSelector(
-    (state: any) => state.searchFilters.zipCodes
+    (state: RootState) => state.searchFilters.zipCodes
   );
 
   const handleClearAll = () => {
