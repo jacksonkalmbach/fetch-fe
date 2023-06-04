@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
+import { RootState } from "../store/store";
 
 import HeartIcon from "./icons/heart-icon";
 import Image from "./image";
@@ -10,7 +11,6 @@ import {
   addToFavorites,
   removeFromFavorites,
 } from "../store/reducers/search-filters-slice";
-import { RootState } from "../store/store";
 
 interface CardProps {
   id: string;

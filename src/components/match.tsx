@@ -3,6 +3,7 @@ import { useSelector } from "react-redux";
 import { RootState } from "../store/store";
 import { DogInterface } from "../types/dog";
 
+import BackIcon from "./icons/back";
 import Button from "./button";
 import Card from "./card";
 
@@ -87,8 +88,14 @@ const Match = ({ onClick }: MatchProps) => {
         ) : (
           match && (
             <div className="flex flex-col items-center justify-center gap-4 w-full">
-              <div className="relative top-0 right-0  flex w-full justify-end md:justify-end md:px-6 ">
-                <Button buttonType="outlined" onClick={onClick} text="Close" />
+              <div className="relative top-0 right-0  flex w-full justify-end md:justify-start md:mb-4 ">
+                <div
+                  className="flex w-fit items-center p-2 border border-transparent rounded cursor-pointer hover:bg-lightGray hover:border"
+                  onClick={onClick}
+                >
+                  <BackIcon className="w-6 h-6 inline-block mr-2" />
+                  Back to Favorites
+                </div>
               </div>
               <h1 className="text-3xl font-bold mb-4">It's a Match!</h1>
               <div className="flex flex-col justify-between w-full bg-lightGray p-4 gap-4 rounded-md">
