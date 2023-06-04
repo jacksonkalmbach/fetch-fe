@@ -5,7 +5,6 @@ import { useDispatch } from "react-redux";
 import { setName, setEmail } from "../store/reducers/user-slice";
 
 import Button from "./button";
-import Input from "./input";
 import Logo from "./icons/logo";
 import FormInput from "./form-input";
 

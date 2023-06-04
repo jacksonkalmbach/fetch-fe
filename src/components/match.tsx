@@ -3,7 +3,7 @@ import { useSelector } from "react-redux";
 import { DogInterface } from "../types/dog";
 
 import Button from "./button";
-import CloseIcon from "./icons/close";
+import Card from "./card";
 
 interface MatchProps {
   onClick: () => void;
@@ -16,33 +16,49 @@ const Match = ({ onClick }: MatchProps) => {
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
   useEffect(() => {
-    fetch("https://frontend-take-home-service.fetch.com/dogs/match", {
-      method: "POST",
-      credentials: "include",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(favorites),
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        setMatchId([data.match]);
-      });
+    try {
+      fetch("https://frontend-take-home-service.fetch.com/dogs/match", {
+        method: "POST",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(favorites),
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          setMatchId([data.match]);
+        });
+    } catch (error) {
+      console.log("Error finding a match in Match.tsx", error);
+    }
   }, [favorites]);
 
   useEffect(() => {
-    fetch("https://frontend-take-home-service.fetch.com/dogs", {
-      method: "POST",
-      credentials: "include",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(matchId),
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        setMatch(data[0]);
-      });
+    try {
+      fetch("https://frontend-take-home-service.fetch.com/dogs", {
+        method: "POST",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(matchId),
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          setMatch(data[0]);
+          fetch("https://frontend-take-home-service.fetch.com/dogs/match", {
+            method: "POST",
+            credentials: "include",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(favorites),
+          });
+        });
+    } catch (error) {
+      console.log("Error getting match details in Match.tsx", error);
+    }
   }, [favorites, matchId]);
 
   useEffect(() => {
@@ -70,27 +86,17 @@ const Match = ({ onClick }: MatchProps) => {
                 <Button buttonType="outlined" onClick={onClick} text="Close" />
               </div>
               <h1 className="text-3xl font-bold mb-4">It's a Match!</h1>
-              <div className="flex justify-between w-full bg-lightGray p-4 rounded-md">
-                <div className="flex flex-col w-1/2 items-center justify-start">
-                  <img
-                    src={match.img}
-                    alt={match.name}
-                    className="w-full h-full object-cover"
-                  />
-                </div>
-                <div className="flex flex-col w-full items-center justify-center  p-2">
-                  <h2 className="text-2xl font-bold w-full px-4 text-center">
-                    {match.name}
-                  </h2>
-                  <div className="flex flex-col gap-2 w-full h-full justify-center items-center px-4 my-6">
-                    <p>Age: {match.age}</p>
-                    <p>Breed: {match.breed}</p>
-                    <p>Zip Code: {match.zip_code}</p>
-                  </div>
-                  <Button text={`Adopt ${match.name}`} buttonType="primary" />
-                </div>
+              <div className="flex flex-col justify-between w-full bg-lightGray p-4 gap-4 rounded-md">
+                <Card
+                  id={match.id}
+                  age={match.age}
+                  breed={match.breed}
+                  img={match.img}
+                  name={match.name}
+                  zipCode={match.zip_code}
+                />
+                <Button text={`Adopt ${match.name}`} buttonType="primary" />
               </div>
-              <div className="flex gap-4 mt-4"></div>
             </div>
           )
         )}

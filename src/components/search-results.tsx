@@ -40,17 +40,21 @@ const SearchResults = () => {
   const searchEndpoint = "/dogs/search";
 
   const fetchData = (url: string) => {
-    fetch(url, {
-      method: "GET",
-      credentials: "include",
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        setSearch(data.resultIds);
-        setDogsAvailable(data.total);
-        setNextPage(data.next);
-        setPrevPage(data.prev);
-      });
+    try {
+      fetch(url, {
+        method: "GET",
+        credentials: "include",
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          setSearch(data.resultIds);
+          setDogsAvailable(data.total);
+          setNextPage(data.next);
+          setPrevPage(data.prev);
+        });
+    } catch (error) {
+      console.log("Error getting search results in SearchResults.tsx", error);
+    }
   };
 
   useEffect(() => {
@@ -61,18 +65,23 @@ const SearchResults = () => {
 
   useEffect(() => {
     const url = `${apiUrl}/dogs`;
-    fetch(url, {
-      method: "POST",
-      credentials: "include",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(search),
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        setDogs(data);
-      });
+
+    try {
+      fetch(url, {
+        method: "POST",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(search),
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          setDogs(data);
+        });
+    } catch (error) {
+      console.log("Error getting dogs in SearchResults.tsx", error);
+    }
   }, [search]);
 
   const handleNextPage = () => {
